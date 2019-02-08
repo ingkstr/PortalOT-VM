@@ -1,0 +1,3 @@
+portalOT.*.__pycache__.*
+portalOT.*.migrations.*
+portalOT.db.sqlite3

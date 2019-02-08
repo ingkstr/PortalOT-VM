@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <title>Alta de ordenes de trabajo</title>
+    <!--Libreria css mínimas de bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+    <!--Libreria css de datetimepicker -->
+    <link href="css/datepicker.css" rel="stylesheet"  type="text/css">
+    <link href="css/jquery.timepicker.css" rel="stylesheet"  type="text/css">
+
+    <!-- Librerias js mínimas de bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <!-- Librerias js d datetimepicker -->
+    <script type="text/javascript" src="js/datepicker.js"></script>
+    <script type="text/javascript" src="js/datepicker.es.js"></script>
+    <script type="text/javascript" src="js/jquery.timepicker.js"></script>
+
+    <!--Libreria de move selecter -->
+    <script type="text/javascript" src="js/move-select.js"></script>
+
+
+</head>
+<body>
+    <div class = "container">
+
+      <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+          <img src="img/maxcom.png" width="90" height="50" class="d-inline-block align-top" alt="">
+          Portal de órdenes de trabajo Maxcom
+        </a>
+      </nav>
+      <div class="container mt-5 mb-5">
+          <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
+        <form method="post">
+          <div class="accordion" id="opcionesvarias">
+
+            <div class="card">
+              <div class="card-header" id="headBasico">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                    Información básica
+                  </button>
+                </h5>
+              </div>
+
+              <div id="contenidoBasico" class="collapse show" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                  <div class="form-row">
+
+
+
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label id="tipo_actividad">Tipo de órden</label>
+                    <select class="form-control" id="tipo_actividad">
+                      <option>----Selecciona una opción----</option>
+                      <option>Órden de trabajo</option>
+                      <option>Ventana de mantenimiento</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label for="gerencia">Gerencia</label>
+                    <select class="form-control" id="gerencia">
+                      <option>----Selecciona una opción----</option>
+                      <option>Switch</option>
+                      <option>Diseño de red</option>
+                      <option>Red datos</option>
+                      <option>ITX - transporte</option>
+                      <option>NOC</option>
+                      <option>Infraestructura</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label for="supervision">Supervisión</label>
+                    <select class="form-control" id="supervision">
+                      <option>----Selecciona una opción----</option>
+                      <option>Ricardo Hernandez</option>
+                      <option>Jose Castelan</option>
+                      <option>Sergio Mendoza</option>
+                      <option>Israel Rodriguez</option>
+                      <option>NOC</option>
+                      <option>Infraestructura</option>
+                    </select>
+                  </div>
+
+                  </div>
+                  <div class="form-group">
+                    <label for="asunto">Asunto de la actividad</label>
+                    <input type="text" class="form-control" id="asunto" placeholder="Asunto">
+                  </div>
+                  <div class="form-group">
+                    <label for="detalle_actividad">Detalle de la actividad</label>
+                    <textarea class="form-control" id="detalle_actividad" rows="5"></textarea>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headProgramacion">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                    Programación
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                    <div id="multi">
+                      <label>Selecciona localidades</label>
+                      <div class="row">
+                        <div class="col-md-5">
+                            <select name="selectfrom" id="select-from" multiple="multiple" size="9" class="form-control">
+                            <option value="1">Central Magdalena</option>
+                            <option value="2">Central Heraldo</option>
+                            <option value="3">Central Queretaro</option>
+                            <option value="4">NOC Santa Fe</option>
+                            <option value="5">Central Monterrey</option>
+                            </select>
+                          <!--  <a href="javascript:void(0);" id="btn-up-source" class="btn btn-success btn-sm">Up</a>
+                            <a href="javascript:void(0);" id="btn-down-source" class="btn btn-success btn-sm">Down</a>  -->
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="javascript:void(0);" id="btn-add" name="btn-add" class="btn btn-primary btn-block">
+                                Seleccionar >>
+                            </a>
+                            <a href="javascript:void(0);" id="btn-remove" name="btn-remove" class="btn btn-primary btn-block">
+                                << Remover
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <select name="selectto" id="select-to" multiple="multiple" size="9" class="form-control">
+                            </select>
+                    <!--        <a href="javascript:void(0);" id="btn-up" class="btn btn-success btn-sm">Up</a>
+                            <a href="javascript:void(0);" id="btn-down" class="btn btn-success btn-sm">Down</a>  -->
+                        </div>
+                    </div>
+
+                    <p class = "h4 mt-3 ">Periodo de actividad</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-inicio" class="label-control">Fecha de inicio de actividad</label>
+                          <input type='text' id="fecha-inicio" class="datepicker-here" data-language='es' data-position="right top" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-inicio" class="label-control">Hora de inicio de actividad</label>
+                          <input id="hora-inicio" type="text" class="time" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-fin" class="label-control">Fecha de fin de actividad</label>
+                          <input type='text' id="fecha-fin" class="datepicker-here" data-language='es' data-position="right top" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-fin" class="label-control">Hora de fin de actividad</label>
+                          <input id="hora-fin" type="text" class="time" />
+                        </div>
+                    </div>
+
+                    <p class = "h4 mt-1">Periodo de afectación</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-inicio-afectacion" class="label-control">Fecha de inicio de afectación</label>
+                          <input type='text' id="fecha-inicio-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-inicio-afectacion" class="label-control">Hora de inicio de afectación</label>
+                          <input id="hora-inicio-afectacion" type="text" class="time" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-fin-afectacion" class="label-control">Fecha de fin de afectación</label>
+                          <input type='text' id="fecha-fin-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-fin-afectacion" class="label-control">Hora de fin de afectación</label>
+                          <input id="hora-fin-afectacion" type="text" class="time" />
+                        </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            <div class="card">
+              <div class="card-header" id="headProveedor">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                    Proveedor
+                  </button>
+                </h5>
+              </div>
+
+              <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="proveedor">Selecciona al proveedor</label>
+                    <select class="form-control" id="proveedor">
+                      <option>Interno</option>
+                      <option>Nokia</option>
+                      <option>Sonus</option>
+                      <option>Infinera</option>
+                      <option>Ribbon</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="personal-proveedor">Selecciona a los responsables de lado de proveedor</label>
+                    <select multiple class="form-control" id="personal-proveedor">
+                      <option>Barry Rafferty</option>
+                      <option>Carlos Duran</option>
+                      <option>Wagner Vicentin</option>
+                      <option>Salvador Delgado</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card">
+              <div class="card-header" id="headActividades">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                    Listado de actividades
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                    <label class="custom-file-label" for="customFileLang">Carga de MOP</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headAfectacion">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                    Afectación
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                  <div class="form-group">
+                    <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                    <select multiple class="form-control" id="personal-proveedor">
+                      <option>Voz TDM</option>
+                      <option>TKSIP</option>
+                      <option>Hosted IPPBX</option>
+                      <option>Internet Dedicado</option>
+                      <option>Acceso IP</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="clientesafectados">Lista de clientes afectados</label>
+                    <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headComentarios">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                    Comentarios adicionales
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="detalle_actividad">Comentarios adicionales</label>
+                    <textarea class="form-control" id="detalle_actividad" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="text-center mt-5">
+            <button type="button" class="btn btn-danger">Crear actividad</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#hora-inicio').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-fin').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-inicio-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-fin-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <title>Listado de órdenes de trabajo Maxcom</title>
+    <!--Libreria css mínimas de bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+    <!--Libreria css de datetimepicker -->
+    <link href="css/datepicker.css" rel="stylesheet"  type="text/css">
+    <link href="css/jquery.timepicker.css" rel="stylesheet"  type="text/css">
+
+    <!-- Librerias js mínimas de bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <!-- Librerias js d datetimepicker -->
+    <script type="text/javascript" src="js/datepicker.js"></script>
+    <script type="text/javascript" src="js/datepicker.es.js"></script>
+    <script type="text/javascript" src="js/jquery.timepicker.js"></script>
+
+    <!--Libreria de move selecter -->
+    <script type="text/javascript" src="js/move-select.js"></script>
+
+
+</head>
+<body>
+    <div class = "container">
+
+      <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+          <img src="img/maxcom.png" width="90" height="50" class="d-inline-block align-top" alt="">
+          Listado de órdenes de trabajo Maxcom
+        </a>
+      </nav>
+      <div class="container mt-5 mb-5">
+          <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
+
+          <input class="form-control mb-3" id="myInput" type="text" placeholder="Busqueda">
+
+          <table class="table table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Orden</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Región</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Responsable</th>
+                <th scope="col">Estatus</th>
+              </tr>
+            </thead>
+            <tbody id="myTable">
+              <tr>
+                <th scope="row">OT-RIBB-HDO-20190206-00001</th>
+                <td>01-feb-2019</td>
+                <td>Central Heraldo</td>
+                <td>Aplicación de patching C20</td>
+                <td>José Castelán</td>
+                <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target=".modal-OT-RIBB-HDO-20190206-00001">En revisión</button></td>
+                <div class="modal fade modal-OT-RIBB-HDO-20190206-00001" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">OT-RIBB-HDO-20190206-00001</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="accordion" id="opcionesvarias">
+
+                          <div class="card">
+                            <div class="card-header" id="headBasico">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                                  Información básica
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label id="tipo_actividad">Tipo de órden <strong>Órden de trabajo</strong> </label>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="gerencia">Gerencia <strong>Switch</strong> </label>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="supervision">Supervisión <strong>José Castelán</strong> </label>
+
+                                </div>
+
+                                </div>
+                                <div class="form-group">
+                                  <label for="asunto"> <strong>Aplicación de patching C20</strong>
+                                  </label>
+                                </div>
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headProgramacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                                  Programación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+
+                                    <label>Localidades</label>
+                                    <ul>
+                                      <li>Central Heraldo</li>
+
+                                    </ul>
+
+
+                                  <p class = "h4 mt-3 ">Periodo de actividad</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de actividad
+                                          <strong>06-02-2018 21:00</strong>
+                                        </label>
+
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de actividad
+                                          <strong>07-02-2018 03:00</strong>
+                                        </label>
+                                        </div>
+
+                                  </div>
+
+                            <!--      <p class = "h4 mt-1">Periodo de afectación</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="fecha-inicio-afectacion" class="label-control">Fecha de inicio de afectación</label>
+                                        <input type='text' id="fecha-inicio-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="hora-inicio-afectacion" class="label-control">Hora de inicio de afectación</label>
+                                        <input id="hora-inicio-afectacion" type="text" class="time" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="fecha-fin-afectacion" class="label-control">Fecha de fin de afectación</label>
+                                        <input type='text' id="fecha-fin-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="hora-fin-afectacion" class="label-control">Hora de fin de afectación</label>
+                                        <input id="hora-fin-afectacion" type="text" class="time" />
+                                      </div>
+                                  </div>  -->
+
+
+                              </div>
+                            </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headProveedor">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                                  Proveedor
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <label for="proveedor">Proveedor <strong>Ribbon</strong> </label>
+                                  <ul>
+                                    <li>Tony Pittman</li>
+                                    <li>Wagner Vicentin</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headActividades">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                                  Listado de actividades
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <button type="button" class="btn btn-link">Descarga MOP aquí</button>
+                              </div>
+                            </div>
+                          </div>
+
+                        <!--  <div class="card">
+                            <div class="card-header" id="headAfectacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                                  Afectación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+                                <div class="form-group">
+                                  <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                                  <select multiple class="form-control" id="personal-proveedor">
+                                    <option>Voz TDM</option>
+                                    <option>TKSIP</option>
+                                    <option>Hosted IPPBX</option>
+                                    <option>Internet Dedicado</option>
+                                    <option>Acceso IP</option>
+                                  </select>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="clientesafectados">Lista de clientes afectados</label>
+                                  <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>  -->
+
+                          <div class="card">
+                            <div class="card-header" id="headComentarios">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                                  Comentarios adicionales
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                      </div>
+                      <div class="mt-3">
+                        <form>
+                          <div class="form-group">
+                            <label for="estatus_orden">Selecciona un estatus nuevo</label>
+                            <select class="custom-select" id="estatus_orden" >
+                              <option selected value="0">--Cambiar estatus--</option>
+                              <option value="1">Aceptado</option>
+                              <option value="2">Rechazado</option>
+                              <option value="3">Reprogramado</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="estatus">Comentarios de estatus</label>
+                            <textarea class="form-control" id="estatus" rows="3"></textarea>
+                          </div>
+                          <button type="button" class="btn btn-primary">Actualizar</button>
+                        </form>
+                      </div>
+                    </div>
+              </tr>
+              <tr>
+                <th scope="row">OT-MAX-MTY-20190209-00002</th>
+                <td>30-ene-2019</td>
+                <td>Central Monterrey</td>
+                <td>Instalación de planta de emergencia</td>
+                <td>Hector Aguayo</td>
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target=".modal-OT-MAX-MTY-20190209-00002">Rechazada</button></td>
+                <div class="modal fade modal-OT-MAX-MTY-20190209-00002" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">OT-MAX-MTY-20190209-00002</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="accordion" id="opcionesvarias">
+
+                          <div class="card">
+                            <div class="card-header" id="headBasico">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                                  Información básica
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label id="tipo_actividad">Tipo de órden <strong>Órden de trabajo</strong> </label>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="gerencia">Gerencia <strong>Switch</strong> </label>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="supervision">Supervisión <strong>Hector Aguayo</strong> </label>
+
+                                </div>
+
+                                </div>
+                                <div class="form-group">
+                                  <label for="asunto"> <strong>Instalación de planta de emergencia</strong>
+                                  </label>
+                                </div>
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headProgramacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                                  Programación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+
+                                    <label>Localidades</label>
+                                    <ul>
+                                      <li>Central Monterrey</li>
+
+                                    </ul>
+
+
+                                  <p class = "h4 mt-3 ">Periodo de actividad</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de actividad
+                                          <strong>12-12-2018 23:00</strong>
+                                        </label>
+
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de actividad
+                                          <strong>13-02-2018 06:00</strong>
+                                        </label>
+                                        </div>
+
+                                  </div>
+
+                            <!--      <p class = "h4 mt-1">Periodo de afectación</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="fecha-inicio-afectacion" class="label-control">Fecha de inicio de afectación</label>
+                                        <input type='text' id="fecha-inicio-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="hora-inicio-afectacion" class="label-control">Hora de inicio de afectación</label>
+                                        <input id="hora-inicio-afectacion" type="text" class="time" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="fecha-fin-afectacion" class="label-control">Fecha de fin de afectación</label>
+                                        <input type='text' id="fecha-fin-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                                      </div>
+                                      <div class="form-group col-md-3 col-sm-6">
+                                        <label for="hora-fin-afectacion" class="label-control">Hora de fin de afectación</label>
+                                        <input id="hora-fin-afectacion" type="text" class="time" />
+                                      </div>
+                                  </div>  -->
+
+
+                              </div>
+                            </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headProveedor">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                                  Proveedor
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <label for="proveedor">Proveedor <strong>Maxcom</strong> </label>
+                                  <ul>
+                                    <li>Moises Carrega</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headActividades">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                                  Listado de actividades
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <button type="button" class="btn btn-link">Descarga MOP aquí</button>
+                              </div>
+                            </div>
+                          </div>
+
+                        <!--  <div class="card">
+                            <div class="card-header" id="headAfectacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                                  Afectación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+                                <div class="form-group">
+                                  <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                                  <select multiple class="form-control" id="personal-proveedor">
+                                    <option>Voz TDM</option>
+                                    <option>TKSIP</option>
+                                    <option>Hosted IPPBX</option>
+                                    <option>Internet Dedicado</option>
+                                    <option>Acceso IP</option>
+                                  </select>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="clientesafectados">Lista de clientes afectados</label>
+                                  <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>  -->
+
+                          <div class="card">
+                            <div class="card-header" id="headComentarios">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                                  Comentarios adicionales
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="mt-3">
+                        <form>
+                          <div class="form-group">
+                            <p class="h5"><strong>Motivo de rechazo</strong></p>
+                            <p>Esta actividad se debe crear como ventana de mantenimiento ya que esta tiene afectación de servicio.</p>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+              </tr>
+              <tr>
+                <th scope="row">VM-NOK-QRO-20190211-00024</th>
+                <td>02-feb-2019</td>
+                <td>Central Querétaro</td>
+                <td>Reacomodo de cableado DDFs</td>
+                <td>Damian Lopez</td>
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-VM-NOK-QRO-20190211-00024">Aprobada</button></td>
+                <div class="modal fade modal-VM-NOK-QRO-20190211-00024" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">VM-NOK-QRO-20190211-00024</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="accordion" id="opcionesvarias">
+
+                          <div class="card">
+                            <div class="card-header" id="headBasico">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                                  Información básica
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label id="tipo_actividad">Tipo de órden <strong>Ventana de mantenimiento</strong> </label>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="gerencia">Gerencia <strong>Switch</strong> </label>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="supervision">Supervisión <strong>Damian Lopez</strong> </label>
+
+                                </div>
+
+                                </div>
+                                <div class="form-group">
+                                  <label for="asunto"> <strong>Reacomodo de cableado DDFs</strong>
+                                  </label>
+                                </div>
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headProgramacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                                  Programación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+
+                                    <label>Localidades</label>
+                                    <ul>
+                                      <li>Central Queretaro</li>
+
+                                    </ul>
+
+
+                                  <p class = "h4 mt-3 ">Periodo de actividad</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de actividad
+                                          <strong>15-02-2018 22:00</strong>
+                                        </label>
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de actividad
+                                          <strong>16-02-2018 04:00</strong>
+                                        </label>
+                                        </div>
+                                  </div>
+
+                                  <p class = "h4 mt-1">Periodo de afectación</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de afectación
+                                          <strong>15-02-2018 00:00</strong>
+                                        </label>
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de afectación
+                                          <strong>16-02-2018 03:00</strong>
+                                        </label>
+                                        </div>
+                                  </div>
+
+
+                              </div>
+                            </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headProveedor">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                                  Proveedor
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <label for="proveedor">Proveedor <strong>Nokia</strong> </label>
+                                  <ul>
+                                    <li>Juan Perez</li>
+                                    <li>Rogelio Rodriguez</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headActividades">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                                  Listado de actividades
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <button type="button" class="btn btn-link">Descarga MOP aquí</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headAfectacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                                  Afectación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+                                <div class="form-group">
+                                  <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                                  <ul>
+                                      <li>Voz TDM</li>
+                                      <li>Internet Dedicado</li>
+                                    </ul>
+                                  </select>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="clientesafectados">Lista de clientes afectados</label>
+                                  <ul>
+                                    <li>Clientes comerciales Monterrey, Querétaro, Norte</li>
+                                    <li>Muñoz y Asociados</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headComentarios">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                                  Comentarios adicionales
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                      </div>
+                      <div class="mt-3">
+                        <form>
+                          <div class="form-group">
+                            <label for="estatus_orden">Selecciona un estatus nuevo</label>
+                            <select class="custom-select" id="estatus_orden" >
+                              <option selected value="0">--Cambiar estatus--</option>
+                              <option value="1">Aceptado</option>
+                              <option value="2">Rechazado</option>
+                              <option value="3">Reprogramado</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="estatus">Comentarios de estatus</label>
+                            <textarea class="form-control" id="estatus" rows="3"></textarea>
+                          </div>
+                          <button type="button" class="btn btn-primary">Actualizar</button>
+                        </form>
+                      </div>
+                    </div>
+              </tr>
+              <tr>
+                <th scope="row">VM-NOK-QRO-20190123-00003</th>
+                <td>22-ene-2019</td>
+                <td>Central Querétaro</td>
+                <td>Reacomodo de cableado DDFs</td>
+                <td>Damian Lopez</td>
+                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target=".modal-VM-NOK-QRO-20190123-00003">Finalizada</button></td>
+                <div class="modal fade modal-VM-NOK-QRO-20190123-00003" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">VM-NOK-QRO-20190123-00003</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="accordion" id="opcionesvarias">
+
+                          <div class="card">
+                            <div class="card-header" id="headBasico">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                                  Información básica
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label id="tipo_actividad">Tipo de órden <strong>Ventana de mantenimiento</strong> </label>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="gerencia">Gerencia <strong>Switch</strong> </label>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                  <label for="supervision">Supervisión <strong>Damian Lopez</strong> </label>
+
+                                </div>
+
+                                </div>
+                                <div class="form-group">
+                                  <label for="asunto"> <strong>Reacomodo de cableado DDFs</strong>
+                                  </label>
+                                </div>
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headProgramacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                                  Programación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+
+                                    <label>Localidades</label>
+                                    <ul>
+                                      <li>Central Queretaro</li>
+
+                                    </ul>
+
+
+                                  <p class = "h4 mt-3 ">Periodo de actividad</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de actividad
+                                          <strong>28-01-2018 22:00</strong>
+                                        </label>
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de actividad
+                                          <strong>29-01-2018 04:00</strong>
+                                        </label>
+                                        </div>
+                                  </div>
+
+                                  <p class = "h4 mt-1">Periodo de afectación</p>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de afectación
+                                          <strong>28-02-2018 00:00</strong>
+                                        </label>
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6">
+                                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de afectación
+                                          <strong>29-02-2018 03:00</strong>
+                                        </label>
+                                        </div>
+                                  </div>
+
+
+                              </div>
+                            </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headProveedor">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                                  Proveedor
+                                </button>
+                              </h5>
+                            </div>
+
+                            <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <label for="proveedor">Proveedor <strong>Nokia</strong> </label>
+                                  <ul>
+                                    <li>Juan Perez</li>
+                                    <li>Rogelio Rodriguez</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="card">
+                            <div class="card-header" id="headActividades">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                                  Listado de actividades
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <button type="button" class="btn btn-link">Descarga MOP aquí</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headAfectacion">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                                  Afectación
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                              <div class="card-body">
+
+                                <div class="form-group">
+                                  <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                                  <ul>
+                                      <li>Voz TDM</li>
+                                      <li>Internet Dedicado</li>
+                                    </ul>
+                                  </select>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="clientesafectados">Lista de clientes afectados</label>
+                                  <ul>
+                                    <li>Clientes comerciales Monterrey, Querétaro, Norte</li>
+                                    <li>Muñoz y Asociados</li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-header" id="headComentarios">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                                  Comentarios adicionales
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                              <div class="card-body">
+                                <div class="form-group">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                      </div>
+                      <div class="mt-3">
+                          <div class="form-group">
+                            <p class="h5"><strong>Comentarios finales de actividad</strong></p>
+                            <p>No se reportó afectación de servicios. Damian comunica fin de la actividad exitosamente.</p>
+                          </div>
+                      </div>
+                    </div>
+              </tr>
+            </tbody>
+          </table>
+
+          <script>
+          $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#myTable tr").filter(function() {
+                $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
+              });
+            });
+          });
+          </script>
+
+
+          <nav aria-label="pag_ordenes">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="container text-center">
+            <button type="button" class="btn btn-outline-primary">Crear nueva orden</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#hora-inicio').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-fin').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-inicio-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+            $('#hora-fin-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+
+        });
+    </script>
+
+
+</body>
+</html>
