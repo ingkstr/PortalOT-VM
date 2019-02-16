@@ -75,7 +75,6 @@ class LocalidadAdmin(NoDeletableModelAdmin):
                 }),
         )
 
-    readonly_fields = ('clli',)
 
 
 @admin.register(Ejecutor)

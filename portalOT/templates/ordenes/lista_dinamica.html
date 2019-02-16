@@ -1,0 +1,6 @@
+{% if tipo == "combobox" %}
+<option value="0">-----------</option>
+{% endif %}
+{% for elemento in elementos %}
+<option value="{{ elemento.pk }}">{{ elemento.nombre }}</option>
+{% endfor %}

@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+    <title>Alta de nueva actividad</title>
+{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/datepicker.css' %}" rel="stylesheet"  type="text/css">
+<link href="{% static 'css/jquery.timepicker.css' %}" rel="stylesheet"  type="text/css">
+{% endblock %}
+
+{% block extra_js %}
+<!-- Librerias js d datetimepicker -->
+<script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datepicker.es.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.timepicker.js' %}"></script>
+
+<!--Libreria de move selecter -->
+<script type="text/javascript" src="{% static 'js/move-select.js' %}"></script>
+{% endblock %}
+
+
+
+{% block container %}
+
+
+
+      <div class="container mt-5 mb-5">
+          <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
+
+        <form method="post" id="ordenes" data-modulos-url="{% url 'ordenes:ajax_carga_submodulos' %}">
+          {% csrf_token %}
+          <div class="accordion" id="opcionesvarias">
+
+            <div class="card">
+              <div class="card-header" id="headBasico">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                    Información básica
+                    {% if form.gerencia.errors or form.supervisor.errors or form.contacto.errors or form.asunto.errors or form.detalle.errors %}
+                    <span class="badge badge-danger">Error!!!</span>
+                    {% endif %}
+                  </button>
+                </h5>
+              </div>
+
+              <div id="contenidoBasico" class="collapse show" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                  <div class="form-row">
+
+                  <div class="form-group col-md-3 col-sm-12">
+                    <label for="actividad">Tipo de órden</label>
+                    <select class="form-control" name="actividad" id="actividad">
+                      <option value="OT" {% if form.errors and form.actividad.value == "OT" %}selected = "selected"{% endif %}>Órden de trabajo</option>
+                      <option value="VM" {% if form.errors and form.actividad.value == "VM" %}selected = "selected"{% endif %}>Ventana de mantenimiento</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3 col-sm-12">
+
+                    <label for="gerencia">Gerencia</label>
+                    <select
+                      class="form-control {% if form.gerencia.errors %}is-invalid{% endif %} "
+                      name="gerencia"
+                      id="gerencia"
+                    >
+                      <option value=0>---------------</option>
+                      {% for gerencia in gerencias %}
+                        <option value="{{ gerencia.pk }}" {% if form.errors and gerencia.pk|add:0 == form.gerencia.value|add:0 %}selected = "selected"{% endif %}>{{ gerencia.nombre }}</option>
+                      {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        {% for error in form.gerencia.errors %}{{ error }}{% endfor %}
+                    </div>
+
+                  </div>
+
+                  <div class="form-group col-md-3 col-sm-12">
+                    <label for="supervisor">Supervisión</label>
+                    <select
+                      class="form-control {% if form.supervisor.errors %}is-invalid{% endif %}"
+                      name="supervisor"
+                      id="supervisor"
+                    >
+                      <option value=0>---------</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        {% for error in form.supervisor.errors %}{{ error }}{% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-3 col-sm-12">
+                    <label for="contacto">Teléfono de contacto</label>
+                    <input
+                      type="text"
+                      maxlength="10"
+                      class="form-control {% if form.contacto.errors %}is-invalid{% endif %}"
+                      id="contacto"
+                      name="contacto"
+                      placeholder="Contacto"
+                      value="{% if form.errors %}{{ form.contacto.value }}{% endif %}"
+                    >
+                    <div class="invalid-feedback">
+                        {% for error in form.contacto.errors %}{{ error }}{% endfor %}
+                    </div>
+                  </div>
+
+                  </div>
+                  <div class="form-group">
+                    <label for="asunto">Asunto de la actividad</label>
+                    <input
+                      type="text"
+                      maxlength="50"
+                      class="form-control {% if form.asunto.errors %}is-invalid{% endif %}"
+                      name="asunto"
+                      id="asunto"
+                      placeholder="Asunto"
+                      value="{% if form.errors %}{{ form.asunto.value }}{% endif %}"
+                    >
+                    <div class="invalid-feedback">
+                        {% for error in form.asunto.errors %}{{ error }}{% endfor %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="detalle_actividad">Detalle de la actividad</label>
+                    <textarea
+                      class="form-control {% if form.detalle.errors %}is-invalid{% endif %}"
+                      name="detalle"
+                      id="detalle"
+                      maxlength="250"
+                      rows="5"
+                    >{% if form.errors %}{{ form.detalle.value }}{% endif %}</textarea>
+                    <div class="invalid-feedback">
+                        {% for error in form.detalle.errors %}{{ error }}{% endfor %}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headProgramacion">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
+                    Programación
+                    {% if form.localidades.errors %}
+                    <span class="badge badge-danger">Error!!!</span>
+                    {% endif %}
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                    <div id="multi">
+                      <label>Selecciona localidades</label>
+                      <div class="row">
+                        <div class="col-md-5">
+                            <select name="selectfrom" id="select-from" multiple="multiple" size="9" class="form-control">
+                              {% for localidad in localidades %}
+                                {% if not form.errors %}
+                                <option value="{{ localidad.clli }}"> {{ localidad.clli }} - {{ localidad.localidad }}</option>
+                                {%  elif localidad.clli not in form.localidades.value %}
+                                <option value="{{ localidad.clli }}"> {{ localidad.clli }} - {{ localidad.localidad }}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="javascript:void(0);" id="btn-add" name="btn-add" class="btn btn-primary btn-block">
+                                Seleccionar >>
+                            </a>
+                            <a href="javascript:void(0);" id="btn-remove" name="btn-remove" class="btn btn-primary btn-block">
+                                << Remover
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <select name="localidades" id="select-to" multiple="multiple" size="9" class="form-control {% if form.localidades.errors %}is-invalid{% endif %}">
+                              {% if form.errors %}
+                                {% for localidad in localidades %}
+                                {% if localidad.clli in form.localidades.value %}
+                                  <option value="{{ localidad.clli }}"> {{ localidad.clli }} - {{ localidad.localidad }}</option>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                            </select>
+                            <div class="invalid-feedback">
+                              {% for error in form.localidades.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class = "h4 mt-3 ">Periodo de actividad</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-inicio" class="label-control">Fecha de inicio de actividad</label>
+                          <input type='text' id="fecha-inicio" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fecha inicio" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-inicio" class="label-control">Hora de inicio de actividad</label>
+                          <input id="hora-inicio" type="text" class="time" placeholder="Hora inicio" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="fecha-fin" class="label-control">Fecha de fin de actividad</label>
+                          <input type='text' id="fecha-fin" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fecha fin" />
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                          <label for="hora-fin" class="label-control">Hora de fin de actividad</label>
+                          <input id="hora-fin" type="text" class="time" placeholder="Hora fin" />
+                        </div>
+                    </div>
+
+                    <div id="cuadro-afectacion" class="d-none">
+                      <p class = "h4 mt-1">Periodo de afectación</p>
+                      <div class="form-row">
+                          <div class="form-group col-md-3 col-sm-6">
+                            <label for="fecha-inicio-afectacion" class="label-control">Fecha de inicio de afectación</label>
+                            <input type='text' id="fecha-inicio-afectacion" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fecha inicia Afectacion" />
+                          </div>
+                          <div class="form-group col-md-3 col-sm-6">
+                            <label for="hora-inicio-afectacion" class="label-control">Hora de inicio de afectación</label>
+                            <input id="hora-inicio-afectacion" type="text" class="time" placeholder="Hora inicio afectación" />
+                          </div>
+                          <div class="form-group col-md-3 col-sm-6">
+                            <label for="fecha-fin-afectacion" class="label-control">Fecha de fin de afectación</label>
+                            <input type='text' id="fecha-fin-afectacion" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fin Afectacion" />
+                          </div>
+                          <div class="form-group col-md-3 col-sm-6">
+                            <label for="hora-fin-afectacion" class="label-control">Hora de fin de afectación</label>
+                            <input id="hora-fin-afectacion" type="text" class="time" placeholder="Hora fin afectación " />
+                          </div>
+                      </div>
+                  </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            <div class="card">
+              <div class="card-header" id="headProveedor">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
+                    Proveedor
+                  </button>
+                </h5>
+              </div>
+
+              <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="proveedor">Selecciona al proveedor</label>
+                    <select class="form-control" id="proveedor">
+                      <option value=0>---------------</option>
+                      {% for proveedor in proveedores %}
+                        <option value="{{ proveedor.pk }}">{{ proveedor.nombre }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ejecutor">Selecciona a los responsables de lado de proveedor</label>
+                    <select multiple class="form-control" id="ejecutor">
+
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card">
+              <div class="card-header" id="headActividades">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
+                    Listado de actividades
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                    <label class="custom-file-label" for="customFileLang">Carga de MOP</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="card-afectacion" class="card d-none" >
+              <div class="card-header" id="headAfectacion">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
+                    Afectación
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoAfectacion" class="collapse" aria-labelledby="headAfectacion" data-parent="#opcionesvarias">
+                <div class="card-body">
+
+                  <div class="form-group">
+                    <label for="personal-proveedor">Selecciona los servicios afectados</label>
+                    <select multiple class="form-control" id="personal-proveedor">
+                      {% for servicio in servicios %}
+                        <option value="{{ servicio.pk }}">{{ servicio.nombre }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="clientesafectados">Lista de clientes afectados</label>
+                    <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header" id="headComentarios">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
+                    Comentarios adicionales
+                  </button>
+                </h5>
+              </div>
+              <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="detalle_actividad">Comentarios adicionales</label>
+                    <textarea class="form-control" id="detalle_actividad" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="text-center mt-5">
+            <button type="submit" class="btn btn-danger">Crear actividad</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <script>
+
+    //Función de despliegue de campos relacivos a la AFECTACION de una ventana
+      $("#actividad").change(function () {
+        if ($(this).val() == 'OT') {
+              $("#card-afectacion").addClass("d-none");
+              $("#cuadro-afectacion").addClass("d-none");
+
+            } else {
+              $("#card-afectacion").removeClass("d-none");
+              $("#cuadro-afectacion").removeClass("d-none");
+            }
+
+      });
+
+      //Función para actualizar el set de supervisores de una gerencia ingresada por un usuario
+      $("#gerencia").change(function () {
+        var url = $("#ordenes").attr("data-modulos-url");
+        var gerencia_id = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            'movimiento': 'gerencia',
+            'supervisor_id': {% if form.errors %} {{ form.supervisor.value }} {% else %} -1 {% endif %} ,
+            'gerencia_id': gerencia_id
+          },
+          success: function (data) {
+            $("#supervisor").html(data);
+          }
+        });
+      });
+
+  //Función para devolver el teléfono cargado en sistema de un supervisor al ser seleccionado
+      $("#supervisor").change(function () {
+        var url = $("#ordenes").attr("data-modulos-url");
+        var supervisor_id = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            'movimiento': 'supervisor',
+            'supervisor_id': supervisor_id
+          },
+          success: function (data) {
+            $("#contacto").val(data);
+          }
+        });
+      });
+
+      //Función que devuelve los ejecutores de un proveedor
+      $("#proveedor").change(function () {
+        var url = $("#ordenes").attr("data-modulos-url");
+
+        var proveedor_id = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            'movimiento': 'proveedor',
+            'proveedor_id': proveedor_id
+          },
+          success: function (data) {
+            $("#ejecutor").html(data);
+          }
+        });
+      });
+
+      //Función donde al dar click en "submit" toma los elementos que quedaron
+      // cargados en el campo de localidades seleccionadas
+      $( "#ordenes" ).submit(function( event ) {
+        $("#select-to option ").prop('selected', true);
+        return;
+      });
+
+
+      $(function() {
+        //Funciones de frotend de los timepicker
+          $('#hora-inicio').timepicker( { 'timeFormat': 'H:i' } );
+          $('#hora-fin').timepicker( { 'timeFormat': 'H:i' } );
+          $('#hora-inicio-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+          $('#hora-fin-afectacion').timepicker( { 'timeFormat': 'H:i' } );
+          //Estas funciones solo se cargan cuando en la validación hay un console.error
+          //y se pretende recuperar los valores de supervisor, ejecutores y afectación previos
+          {% if form.errors %}
+            $("#gerencia").change();
+            $("#actividad").change();
+
+          {% endif %}
+      });
+
+    </script>
+{% endblock %}
