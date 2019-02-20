@@ -11,3 +11,7 @@ class Orden(models.Model):
     asunto = models.CharField(max_length=50)
     detalle = models.CharField(max_length=250)
     localidades = models.ManyToManyField(Localidad)
+    fecha_inicio = models.DateField()
+    hora_inicio = models.TimeField()
+    fecha_fin = models.DateField()
+    hora_fin = models.TimeField()
