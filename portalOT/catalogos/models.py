@@ -23,6 +23,7 @@ class Localidad(models.Model):
     clli = models.CharField(primary_key=True, max_length=10, unique=True)
     localidad = models.CharField(max_length=25)
     ubicacion = models.CharField(max_length=75)
+    codigo = models.CharField(max_length=4)
     activo = models.BooleanField()
 
     def __str__(self):

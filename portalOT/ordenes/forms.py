@@ -8,12 +8,12 @@ class OrdenForm (forms.ModelForm):
 	"""Clase de form de alta de órden"""
 
 	fecha_inicio = forms.DateField(
-		widget=forms.DateInput(format='%d/%m/%Y'),
-		input_formats=('%d/%m/%Y',)
+		widget = forms.DateInput(format='%d/%m/%Y'),
+		input_formats = ('%d/%m/%Y',),
 		)
 	fecha_fin = forms.DateField(
 		widget=forms.DateInput(format='%d/%m/%Y'),
-		input_formats=('%d/%m/%Y',)
+		input_formats=('%d/%m/%Y',),
 		)
 
 	class Meta:
@@ -21,85 +21,100 @@ class OrdenForm (forms.ModelForm):
 		model = Orden
 		fields = {'actividad','gerencia','supervisor','contacto','asunto',
 			'detalle','localidades','fecha_inicio','hora_inicio','fecha_fin',
-			'hora_fin',}
-		error_messages = {
-			'gerencia':  {
-				'invalid_choice' : "Se requiere conocer la gerencia a cargo de la actividad",
-			} ,
-			'supervisor':  {
-				'invalid_choice' : "Se requiere conocer al responsable a cargo de la actividad",
-			} ,
-			'contacto':  {
-				'required' : "Se requiere tener un teléfono de contacto del supervisor",
-				'max_length' : "Requerimos un contacto de 10 digitos",
-			},
-			'asunto':  {
-				'required' : "Es obligatorio redactar el asunto de la actividad",
-				'max_length' : "Requerimos que el asunto no rebase de 50 caracteres",
-			} ,
-			'detalle':  {
-				'required' : "Es obligatorio redactar el detalle de la actividad",
-				'max_length' : "Requerimos que el detalle no rebase de 250 caracteres",
-			} ,
-			'localidades':  {
-				'required' : "Es obligatorio seleccionar al menos una localidad",
-			} ,
-			'fecha_inicio': {
-				'required' : "Es obligatorio insertar una fecha de inicio de la actividad",
-			} ,
-			'hora_inicio': {
-				'required' : "Es obligatorio insertar una hora de inicio de la actividad",
-			} ,
-			'fecha_fin': {
-				'required' : "Es obligatorio insertar una fecha de fin de la actividad",
-			} ,
-			'hora_fin': {
-				'required' : "Es obligatorio insertar una hora de fin de la actividad",
-			} ,
-		}
+			'hora_fin','fecha_inicio_afectacion','hora_inicio_afectacion','fecha_fin_afectacion',
+			'hora_fin_afectacion','proveedor','ejecutores','mop','servicios','clientes_afectados','comentarios'}
+
+	def save(self):
+		"""Genera el número de OT o VM y lo guarda"""
+		data = self.cleaned_data
+		seguimiento = Orden.objects.filter(fecha_inicio=data.get("fecha_inicio")).count() + 1
+		orden = Orden.objects.create(**data) #desdobla el formulario en el modelo
+		codigo = orden.actividad + orden.proveedor.codigo 
+		orden.save()
 
 	def clean(self):
 		"""Función de validaciones especiales de formulario"""
-		data = super().clean()
-		print(data)
-		"""Validación de fechas de actividad"""
+		cleaned_data = super(OrdenForm, self).clean()
+		print(cleaned_data)
 		hoy = datetime.now()
-		inicio = datetime.combine(data['fecha_inicio'], data['hora_inicio'])
-		fin = datetime.combine(data['fecha_fin'], data['hora_fin'])
+		"""Validación de fechas de actividad"""
+		fecha_inicio = cleaned_data.get("fecha_inicio")
+		fecha_fin = cleaned_data.get("fecha_fin")
+		hora_inicio = cleaned_data.get("hora_inicio")
+		hora_fin = cleaned_data.get("hora_fin")
+		actividad = cleaned_data.get("actividad")
+		omision_elementos_afectados = False
+		omision_periodo_actividad = False
+		omision_periodo_afectacion = False
+		if not fecha_inicio or not fecha_fin or not hora_inicio or not hora_fin:
+			omision_periodo_actividad = True
+		else:
+			inicio = datetime.combine(fecha_inicio, hora_inicio)
+			fin = datetime.combine(fecha_fin, hora_fin)
 
-		if (hoy > inicio):
-			self.add_error('fecha_inicio','La fecha de inicio no puede ser una que ya haya sucedido')
-			raise forms.ValidationError('La fecha de inicio no puede ser una que ya haya sucedido')
+			if (hoy >= inicio):
+				self.add_error('fecha_inicio','El horario de inicio no puede ser una que ya haya sucedido')
+				omision_periodo_actividad = True
 
-		if (hoy > fin):
-			self.add_error('fecha_fin','La fecha de término no puede ser una que ya haya sucedido')
-			raise forms.ValidationError('La fecha de término no puede ser una que ya haya sucedido')
+			if (hoy >= fin):
+				self.add_error('fecha_fin','El horario de término no puede ser una que ya haya sucedido')
+				omision_periodo_actividad = True
 
-		if (inicio > fin):
-			self.add_error('fecha_inicio','Las fecha de inicio no puede ser después de la fecha de término')
-			raise forms.ValidationError('Las fecha de inicio no puede ser después de la fecha de término')
+			if (inicio >= fin):
+				self.add_error('fecha_inicio','El horario de inicio no puede ser después del término')
+				omision_periodo_actividad = True
 
-		return data
+		"""Validación de periodo y puntos de afectacion"""
 
-#	def __init__(self, *args, **kwargs):
-#		super().__init__(*args, **kwargs)
-#		self.fields['supervisor'].queryset = Supervisor.objects.none()
-#		if 'gerencia' in self.data:
-#			try:
-#				gerencia_id = int(self.data.get('gerencia'))
-#				self.fields['supervisor'].queryset = Superviso.objects.filter(gerencia_id=gerencia_id).order_by('nombre')
-#			except (ValueError, TypeError):
-#				pass  # invalid input from the client; ignore and fallback to empty City queryset
-#		elif self.instance.pk:
-#				self.fields['supervisor'].queryset = self.instance.gerencia.supervisor_set.order_by('nombre')
+		if actividad == "VM":
+			servicios = cleaned_data.get("servicios")
+			if not servicios:
+				self.add_error('servicios','Este campo es obligatorio en ventanas de mtto')
+				omision_elementos_afectados = True
+			clientes_afectados = cleaned_data.get("clientes_afectados")
+			if not clientes_afectados:
+				self.add_error('clientes_afectados','Este campo es obligatorio en ventanas de mtto')
+				omision_elementos_afectados = True
 
-		#self.fields['city'].queryset = City.objects.none()
-		#if 'proveedor' in self.data:
-		#if 'country' in self.data:
-		#	try:
-		#		proveedorid = int(self.data.get('proveedot'))
-		#		self.fields['city'].queryset = City.objects.filter(gerencia_id=gerencia_id).order_by('nombre')
-		#	except (ValueError, TypeError):
-		#		pass  # invalid input from the client; ignore and fallback to empty City queryset
-		#elif self.instance.pk:
-		#	self.fields['supervisor'].queryset = self.instance.gerencia.supervisor_set.order_by('nombre')
+			if omision_periodo_actividad:
+				self.add_error('fecha_inicio_afectacion','Primero hay que corregir el horario de actividad general')
+				self.add_error('fecha_fin_afectacion','Primero hay que corregir el horario de actividad general')
+				self.add_error('hora_inicio_afectacion','Primero hay que corregir el horario de actividad general')
+				self.add_error('hora_fin_afectacion','Primero hay que corregir el horario de actividad general')
+			else:
+				fecha_inicio_afectacion = cleaned_data.get("fecha_inicio_afectacion")
+				if not fecha_inicio_afectacion:
+					self.add_error('fecha_inicio_afectacion','Este campo es obligatorio en ventanas de mtto')
+					omision_periodo_afectacion = True
+				fecha_fin_afectacion = cleaned_data.get("fecha_fin_afectacion")
+				if not fecha_fin_afectacion:
+					self.add_error('fecha_fin_afectacion','Este campo es obligatorio en ventanas de mtto')
+					omision_periodo_afectacion = True
+				hora_inicio_afectacion = cleaned_data.get("hora_inicio_afectacion")
+				if not hora_inicio_afectacion:
+					self.add_error('hora_inicio_afectacion','Este campo es obligatorio en ventanas de mtto')
+					omision_periodo_afectacion = True
+				hora_fin_afectacion = cleaned_data.get("hora_fin_afectacion")
+				if not hora_fin_afectacion:
+					self.add_error('hora_fin_afectacion','Este campo es obligatorio en ventanas de mtto')
+					omision_periodo_afectacion = True
+
+				if not omision_periodo_afectacion:
+
+					inicio_afectacion = datetime.combine(fecha_inicio_afectacion, hora_inicio_afectacion)
+					fin_afectacion = datetime.combine(fecha_fin_afectacion, hora_fin_afectacion)
+
+					if (inicio_afectacion >= fin_afectacion):
+						self.add_error('fecha_inicio_afectacion','El inicio de afectación no puede ser después del término de afectación')
+						omision_periodo_afectacion = True
+					if (inicio_afectacion < inicio):
+						self.add_error('fecha_inicio_afectacion','El inicio de afectación no puede ser antes que el inicio de la actividad')
+						omision_periodo_afectacion = True
+					if (fin_afectacion > fin):
+						self.add_error('fecha_fin_afectacion','El fin de afectación no puede ser después que el fin de la actividad')
+						omision_periodo_afectacion = True
+
+		if not omision_periodo_actividad and not omision_periodo_afectacion and not omision_elementos_afectados:
+			return cleaned_data
+		else:
+			raise forms.ValidationError('Validación no pasada!!!')

@@ -1,0 +1,7 @@
+{% for ejecutor in ejecutores %}
+<option value="{{ ejecutor.pk }}"
+{% for elegido in elegidos %}
+{% if ejecutor.pk|add:0 == elegido|add:0 %}selected = "selected" {% endif %}
+{% endfor %}
+>{{ ejecutor.nombre }}</option>
+{% endfor %}

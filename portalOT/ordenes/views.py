@@ -39,7 +39,7 @@ class NuevoView(LoginRequiredMixin, CreateView):
         ctx['localidades'] = Localidad.objects.filter(activo = 1)
         ctx['servicios'] = Servicio.objects.filter(activo = 1)
         return ctx
-
+        
 
 def carga_submodulos(request):
     """Función usada por Ajax para actualizar los catálogos de supervisores, teléfonos de contacto y ejecutores"""
@@ -55,5 +55,8 @@ def carga_submodulos(request):
         return render(request, 'ordenes/telefono.html', {'telefono': supervisor.telefono})
     elif movimiento == 'proveedor':
         proveedor_id = request.GET.get('proveedor_id')
+        ejecutores_elegidos = request.GET.get('ejecutores').split(",")
+        print("--lista ejecutores--")
+        print(ejecutores_elegidos)
         ejecutores = Ejecutor.objects.filter(proveedor_id=proveedor_id, activo=1).order_by('nombre')
-        return render(request, 'ordenes/lista_dinamica.html', {'elementos': ejecutores, 'tipo':'lista'})
+        return render(request, 'ordenes/lista_ejecutores.html', {'ejecutores': ejecutores , 'elegidos': ejecutores_elegidos})

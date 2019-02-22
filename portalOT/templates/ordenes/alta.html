@@ -30,7 +30,7 @@
       <div class="container mt-5 mb-5">
           <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
 
-        <form method="post" id="ordenes" data-modulos-url="{% url 'ordenes:ajax_carga_submodulos' %}">
+        <form method="post" id="ordenes" data-modulos-url="{% url 'ordenes:ajax_carga_submodulos' %}"  enctype="multipart/form-data">
           {% csrf_token %}
           <div class="accordion" id="opcionesvarias">
 
@@ -147,7 +147,7 @@
                 <h5 class="mb-0">
                   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProgramacion" aria-expanded="false" aria-controls="contenidoProgramacion">
                     Programación
-                    {% if form.localidades.errors or form.fecha_inicio.errors or form.hora_inicio.errors or form.fecha_fin.errors or form.hora_fin.errors %}
+                    {% if form.localidades.errors or form.fecha_inicio.errors or form.hora_inicio.errors or form.fecha_fin.errors or form.hora_fin.errors or form.fecha_inicio_afectacion.errors or form.hora_inicio_afectacion.errors or form.fecha_fin_afectacion.errors or form.hora_fin_afectacion.errors %}
                     <span class="badge badge-danger">Error!!!</span>
                     {% endif %}
                   </button>
@@ -265,19 +265,63 @@
                       <div class="form-row">
                           <div class="form-group col-md-3 col-sm-6">
                             <label for="fecha_inicio_afectacion" class="label-control">Fecha de inicio de afectación</label>
-                            <input type='text' id="fecha_inicio_afectacion" name="fecha_inicio_afectacion" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fecha inicia Afectacion" />
+                            <input
+                              type='text'
+                              id="fecha_inicio_afectacion"
+                              name="fecha_inicio_afectacion"
+                              class="datepicker-here form-control {% if form.fecha_inicio_afectacion.errors %}is-invalid{% endif %}"
+                              data-language='es'
+                              data-position="right top"
+                              placeholder="Fecha inicia Afectacion"
+                              value="{% if form.errors %}{{ form.fecha_inicio_afectacion.value }}{% endif %}"
+                            />
+                            <div class="invalid-feedback">
+                                {% for error in form.fecha_inicio_afectacion.errors %}{{ error }}{% endfor %}
+                            </div>
                           </div>
                           <div class="form-group col-md-3 col-sm-6">
                             <label for="hora_inicio_afectacion" class="label-control">Hora de inicio de afectación</label>
-                            <input id="hora_inicio_afectacion"name="hora_inicio_afectacion" type="text" class="time" placeholder="Hora inicio afectación" />
+                            <input
+                              id="hora_inicio_afectacion"
+                              name="hora_inicio_afectacion"
+                              type="text"
+                              class="time form-control {% if form.hora_inicio_afectacion.errors %}is-invalid{% endif %}"
+                              placeholder="Hora inicio afectación"
+                              value="{% if form.errors %}{{ form.hora_inicio_afectacion.value }}{% endif %}"
+                            />
+                            <div class="invalid-feedback">
+                                {% for error in form.hora_inicio_afectacion.errors %}{{ error }}{% endfor %}
+                            </div>
                           </div>
                           <div class="form-group col-md-3 col-sm-6">
                             <label for="fecha_fin_afectacion" class="label-control">Fecha de fin de afectación</label>
-                            <input type='text' id="fecha_fin_afectacion" name="fecha_fin_afectacion" class="datepicker-here" data-language='es' data-position="right top" placeholder="Fin Afectacion" />
+                            <input
+                              type='text'
+                              id="fecha_fin_afectacion"
+                              name="fecha_fin_afectacion"
+                              class="datepicker-here form-control {% if form.fecha_fin_afectacion.errors %}is-invalid{% endif %}"
+                              data-language='es'
+                              data-position="right top"
+                              placeholder="Fin Afectacion"
+                              value="{% if form.errors %}{{ form.fecha_fin_afectacion.value }}{% endif %}"
+                            />
+                            <div class="invalid-feedback">
+                                {% for error in form.fecha_fin_afectacion.errors %}{{ error }}{% endfor %}
+                            </div>
                           </div>
                           <div class="form-group col-md-3 col-sm-6">
                             <label for="hora_fin_afectacion" class="label-control">Hora de fin de afectación</label>
-                            <input id="hora_fin_afectacion" name="hora_fin_afectacion" type="text" class="time" placeholder="Hora fin afectación " />
+                            <input
+                              id="hora_fin_afectacion"
+                              name="hora_fin_afectacion"
+                              type="text"
+                              class="time form-control {% if form.hora_fin_afectacion.errors %}is-invalid{% endif %}"
+                              placeholder="Hora fin afectación"
+                              value="{% if form.errors %}{{ form.hora_fin_afectacion.value }}{% endif %}"
+                            />
+                            <div class="invalid-feedback">
+                                {% for error in form.hora_fin_afectacion.errors %}{{ error }}{% endfor %}
+                            </div>
                           </div>
                       </div>
                   </div>
@@ -292,6 +336,9 @@
                 <h5 class="mb-0">
                   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoProveedor" aria-expanded="false" aria-controls="contenidoProveedor">
                     Proveedor
+                    {% if form.proveedor.errors or form.ejecutores.errors %}
+                    <span class="badge badge-danger">Error!!!</span>
+                    {% endif %}
                   </button>
                 </h5>
               </div>
@@ -300,19 +347,25 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="proveedor">Selecciona al proveedor</label>
-                    <select class="form-control" id="proveedor">
+                    <select class="form-control {% if form.proveedor.errors %}is-invalid{% endif %}" id="proveedor" name="proveedor">
                       <option value=0>---------------</option>
                       {% for proveedor in proveedores %}
-                        <option value="{{ proveedor.pk }}">{{ proveedor.nombre }}</option>
+                        <option value="{{ proveedor.pk }}"  {% if form.errors and proveedor.pk|add:0 == form.proveedor.value|add:0 %}selected = "selected"{% endif %} >{{ proveedor.nombre }}</option>
                       {% endfor %}
                     </select>
+                    <div class="invalid-feedback">
+                        {% for error in form.proveedor.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="ejecutor">Selecciona a los responsables de lado de proveedor</label>
-                    <select multiple class="form-control" id="ejecutor">
+                    <label for="ejecutores">Selecciona a los responsables de lado de proveedor</label>
+                    <select multiple class="form-control {% if form.ejecutores.errors %}is-invalid{% endif %}" id="ejecutores" name="ejecutores">
 
                     </select>
+                    <div class="invalid-feedback">
+                        {% for error in form.ejecutores.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
 
                 </div>
@@ -325,14 +378,31 @@
                 <h5 class="mb-0">
                   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoActividades" aria-expanded="false" aria-controls="contenidoActividades">
                     Listado de actividades
+                    {% if form.errors %}
+                      {% if form.mop.value %}
+                        <span class="badge badge-warning">Volver a cargar</span>
+                      {% else %}
+                        <span class="badge badge-danger">Error!!!</span>
+                      {% endif %}
+                    {% endif %}
                   </button>
                 </h5>
               </div>
               <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
                 <div class="card-body">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFileLang" lang="es">
-                    <label class="custom-file-label" for="customFileLang">Carga de MOP</label>
+                  <div class="form-group">
+                    <label for="mop" class="label-control">Agrega el archivo con el MOP de actividades y rollback</label>
+                    <input
+                      type="file"
+                      class="form-control-file {% if form.mop.errors %}is-invalid{% endif %}"
+                      id="mop"
+                      name="mop"
+                      value="{% if form.errors %}{{ form.mop.value }}{% endif %}"
+                    >
+
+                    <div class="invalid-feedback">
+                        {% for error in form.mop.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -343,6 +413,9 @@
                 <h5 class="mb-0">
                   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
                     Afectación
+                    {% if form.clientes_afectados.errors or form.servicios.errors %}
+                    <span class="badge badge-danger">Error!!!</span>
+                    {% endif %}
                   </button>
                 </h5>
               </div>
@@ -350,17 +423,30 @@
                 <div class="card-body">
 
                   <div class="form-group">
-                    <label for="personal-proveedor">Selecciona los servicios afectados</label>
-                    <select multiple class="form-control" id="personal-proveedor">
+                    <label for="servicios">Selecciona los servicios afectados</label>
+                    <select multiple class="form-control {% if form.servicios.errors %}is-invalid{% endif %}" id="servicios" name="servicios">
                       {% for servicio in servicios %}
-                        <option value="{{ servicio.pk }}">{{ servicio.nombre }}</option>
+                        <option value="{{ servicio.pk }}"
+                        {% for opcion in form.servicios.value %}{% if servicio.pk|add:0 == opcion|add:0 %}selected = "selected"{% endif %} {% endfor %}>{{ servicio.nombre }}</option>
                       {% endfor %}
                     </select>
+                    <div class="invalid-feedback">
+                        {% for error in form.servicios.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="clientesafectados">Lista de clientes afectados</label>
-                    <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
+                    <label for="clientes_afectados">Lista de clientes afectados</label>
+                    <textarea
+                      class="form-control {% if form.clientes_afectados.errors %}is-invalid{% endif %}"
+                      id="clientes_afectados"
+                      name="clientes_afectados"
+                      maxlength="500"
+                      rows="5"
+                    >{% if form.errors %}{{ form.clientes_afectados.value }}{% endif %}</textarea>
+                    <div class="invalid-feedback">
+                        {% for error in form.clientes_afectados.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
 
                 </div>
@@ -372,6 +458,9 @@
                 <h5 class="mb-0">
                   <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
                     Comentarios adicionales
+                    {% if form.comentarios.errors %}
+                    <span class="badge badge-danger">Error!!!</span>
+                    {% endif %}
                   </button>
                 </h5>
               </div>
@@ -379,7 +468,16 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="detalle_actividad">Comentarios adicionales</label>
-                    <textarea class="form-control" id="detalle_actividad" rows="10"></textarea>
+                    <textarea
+                      class="form-control {% if form.comentarios.errors %}is-invalid{% endif %}"
+                      maxlength="250"
+                      id="comentarios"
+                      name="comentarios"
+                      rows="5"
+                    >{% if form.errors %}{{ form.comentarios.value }}{% endif %}</textarea>
+                    <div class="invalid-feedback">
+                        {% for error in form.comentarios.errors %}{{ error }}{% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -447,16 +545,16 @@
       //Función que devuelve los ejecutores de un proveedor
       $("#proveedor").change(function () {
         var url = $("#ordenes").attr("data-modulos-url");
-
         var proveedor_id = $(this).val();
         $.ajax({
           url: url,
           data: {
             'movimiento': 'proveedor',
+            'ejecutores': '{% if form.errors %}{% for valor in form.ejecutores.value %}{{ valor }},{% endfor %} {% else %}-1{% endif %}' ,
             'proveedor_id': proveedor_id
           },
           success: function (data) {
-            $("#ejecutor").html(data);
+            $("#ejecutores").html(data);
           }
         });
       });
@@ -480,7 +578,7 @@
           {% if form.errors %}
             $("#gerencia").change();
             $("#actividad").change();
-
+            $("#proveedor").change();
           {% endif %}
       });
 
