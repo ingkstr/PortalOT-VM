@@ -27,5 +27,11 @@ urlpatterns = [
 	path(
 		route='ajax/carga_submodulos/',
 		view=views.carga_submodulos,
-		name='ajax_carga_submodulos'),
+		name='ajax_carga_submodulos'
+	),
+	path(
+		route='ajax/ajax_consulta_ot/',
+		view=views.carga_actividad,
+		name='ajax_consulta_ot'
+	),
 ]

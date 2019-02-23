@@ -24,18 +24,9 @@ class OrdenForm (forms.ModelForm):
 			'hora_fin','fecha_inicio_afectacion','hora_inicio_afectacion','fecha_fin_afectacion',
 			'hora_fin_afectacion','proveedor','ejecutores','mop','servicios','clientes_afectados','comentarios'}
 
-	def save(self):
-		"""Genera el número de OT o VM y lo guarda"""
-		data = self.cleaned_data
-		seguimiento = Orden.objects.filter(fecha_inicio=data.get("fecha_inicio")).count() + 1
-		orden = Orden.objects.create(**data) #desdobla el formulario en el modelo
-		codigo = orden.actividad + orden.proveedor.codigo 
-		orden.save()
-
 	def clean(self):
 		"""Función de validaciones especiales de formulario"""
 		cleaned_data = super(OrdenForm, self).clean()
-		print(cleaned_data)
 		hoy = datetime.now()
 		"""Validación de fechas de actividad"""
 		fecha_inicio = cleaned_data.get("fecha_inicio")

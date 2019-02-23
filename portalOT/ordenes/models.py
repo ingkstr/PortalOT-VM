@@ -1,6 +1,7 @@
 """Modelos de ordenes"""
 from django.db import models
 from catalogos.models import *
+from datetime import datetime
 
 class Orden(models.Model):
     """Clase modelo de orden de trabajo o ventana de mantenimiento"""
@@ -26,3 +27,5 @@ class Orden(models.Model):
     servicios = models.ManyToManyField(Servicio, blank = True)
     clientes_afectados = models.CharField(max_length=500, blank = True, null = True)
     comentarios = models.CharField(max_length=250, blank = True, null = True)
+    estatus = models.IntegerField(default = 0)
+    log = models.TextField(default = "Orden creada en "+ str(datetime.now()))

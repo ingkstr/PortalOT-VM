@@ -21,14 +21,15 @@ class ListadoView(LoginRequiredMixin, ListView):
 	"""Regresa el listado de ordenes"""
 	template_name = 'ordenes/listado.html'
 	model = Orden
-	#ordering = ('-created',)
-	paginate_by = 30
+	ordering = ('-fecha_inicio',)
+	paginate_by = 10
 	context_object_name= 'ordenes'
 
 class NuevoView(LoginRequiredMixin, CreateView):
     """Crea nueva orden con CreateView"""
     template_name='ordenes/alta.html'
     form_class = OrdenForm
+    model =  Orden
     success_url = reverse_lazy('ordenes:listado')
 
     def get_context_data(self, **kwargs):
@@ -39,7 +40,24 @@ class NuevoView(LoginRequiredMixin, CreateView):
         ctx['localidades'] = Localidad.objects.filter(activo = 1)
         ctx['servicios'] = Servicio.objects.filter(activo = 1)
         return ctx
-        
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        model = form.save(commit=False)
+        seguimiento = str(Orden.objects.filter(fecha_inicio=model.fecha_inicio).count() + 1).zfill(5)
+        codigo_localidad = ""
+        for localidad in form.cleaned_data['localidades']:
+            codigo_localidad = localidad.codigo
+            break
+        codigo = model.actividad + "-" + model.proveedor.codigo + "-" + codigo_localidad + "-" + model.fecha_inicio.strftime('%Y%m%d') + "-" + str(seguimiento)
+        model.id = codigo
+        return super().form_valid(form)
+
+def carga_actividad(request):
+    """Función Ajax para mostrar el detalle de una actividad"""
+    iden = request.GET.get('actividad')
+    actividad = Orden.objects.get(pk = iden)
+    return render(request,'ordenes/consulta.html',{'actividad': actividad })
 
 def carga_submodulos(request):
     """Función usada por Ajax para actualizar los catálogos de supervisores, teléfonos de contacto y ejecutores"""

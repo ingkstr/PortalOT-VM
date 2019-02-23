@@ -6,19 +6,6 @@ Envío de email para notificar actividad en el portal
 Privilegios para autorizar o rechazar actividades
 Privilegios admin para catálogo
 
-proveedor y ejecutores recuperados si el form es falso
-generador de no. de ot
-fechas coincidentes
-cuadro de busqueda de localidades
-
-
-
-PASOS DE UN NUEVO CAMPO
--Añadirlo en model
--Añadirlo en form
--Cargar campos de error en template
--Cargar que se conserve el valor si hay error
--COnsiderarlo en la bandera de errores de una sección
 
 REQUERIMIENTOS NO FUNCIONALES
 =============================
