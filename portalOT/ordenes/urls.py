@@ -30,8 +30,8 @@ urlpatterns = [
 		name='ajax_carga_submodulos'
 	),
 	path(
-		route='ajax/ajax_consulta_ot/',
-		view=views.carga_actividad,
-		name='ajax_consulta_ot'
+		route='consulta/<str:pk>/',
+		view=views.OrdenUpdateView.as_view(),
+		name='consulta'
 	),
 ]

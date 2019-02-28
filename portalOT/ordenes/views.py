@@ -1,36 +1,92 @@
 """URLs de views de la aplicación órdenes"""
+
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from ordenes.models import Orden
-from ordenes.forms import OrdenForm
+from ordenes.forms import OrdenForm,OrdenEstatusForm
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from catalogos.models import *
+from django.contrib.messages.views import SuccessMessageMixin
+from datetime import datetime
+from emails.views import send_email
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
+
+
 
 class LoginView(auth_views.LoginView):
     """Vista de autenticacion"""
     template_name = 'ordenes/login.html'
-    #redirect_field_name = 'next'
+
 
 class LogoutView(auth_views.LogoutView):
 	"""Vista de logout"""
 	pass
 
-class ListadoView(LoginRequiredMixin, ListView):
-	"""Regresa el listado de ordenes"""
-	template_name = 'ordenes/listado.html'
-	model = Orden
-	ordering = ('-fecha_inicio',)
-	paginate_by = 10
-	context_object_name= 'ordenes'
 
-class NuevoView(LoginRequiredMixin, CreateView):
+class ListadoView(LoginRequiredMixin, ListView):
+    """Regresa el listado de ordenes"""
+    template_name = 'ordenes/listado.html'
+    model = Orden
+    ordering = ('-fecha_inicio',)
+    paginate_by = 10
+    context_object_name= 'ordenes'
+
+    def get_queryset(self, **kwargs):
+        """Filtrado de consulta"""
+        valor = self.request.GET.get('searchby', None)
+        ordering = self.get_ordering()
+        if valor:
+            return Orden.objects.filter(id__contains=valor).order_by(*ordering)
+        else:
+            return Orden.objects.all().order_by(*ordering)
+
+
+class OrdenUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """Actualiza estatus de orden"""
+    template_name='ordenes/consulta.html'
+    model =  Orden
+    fields = ['id','estatus','log']
+    slug_field = 'pk'
+    slug_url_kwarg = 'pk'
+    success_url = reverse_lazy('ordenes:listado')
+    success_message = "Orden %(id)s actualizado exitosamente"
+
+    def form_valid(self, form):
+        """Generación de log de cambios"""
+        model = form.save(commit=False)
+        estatus = {1 : "Aceptado", 2 : "Rechazado", 3:"En ejecución", 4: "Finalizada", 5 : "Reprogramada"}
+        updatelog = "Usuario " + self.request.user.first_name + " " + self.request.user.last_name + " cambia estado a " + estatus[model.estatus]
+        if model.log:
+            updatelog += " comentando lo siguiente:\n" + model.log +"\n"
+
+        model.log = updatelog + model.log
+
+        send_email(self.request.user.username, "Actualización de orden " + model.id, updatelog)
+        return super().form_valid(form)
+
+    def get_success_message(self, cleaned_data):
+        """Formato para generar el mensaje de orden actualizada"""
+        return self.success_message % dict(
+            cleaned_data,
+            id=self.object.id,
+        )
+
+
+class NuevoView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """Crea nueva orden con CreateView"""
     template_name='ordenes/alta.html'
     form_class = OrdenForm
     model =  Orden
     success_url = reverse_lazy('ordenes:listado')
+    success_message = "Orden %(id)s  creada exitosamente"
+
+    @method_decorator(permission_required('ordenes.add_orden',reverse_lazy('ordenes:listado')))
+    def dispatch(self, *args, **kwargs):
+        """Función de inicio donde se requiere privilegios de alta"""
+        return super(NuevoView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """Inserción de los catálogos de registros activos de gerencias, proveedores, localidades y servicios"""
@@ -42,7 +98,7 @@ class NuevoView(LoginRequiredMixin, CreateView):
         return ctx
 
     def form_valid(self, form):
-        """If the form is valid, save the associated model."""
+        """Guardado de nueva orden, el cual genera la clave de la actividad y log de creación"""
         model = form.save(commit=False)
         seguimiento = str(Orden.objects.filter(fecha_inicio=model.fecha_inicio).count() + 1).zfill(5)
         codigo_localidad = ""
@@ -51,13 +107,29 @@ class NuevoView(LoginRequiredMixin, CreateView):
             break
         codigo = model.actividad + "-" + model.proveedor.codigo + "-" + codigo_localidad + "-" + model.fecha_inicio.strftime('%Y%m%d') + "-" + str(seguimiento)
         model.id = codigo
+
+        updatelog = "Orden creada por " + self.request.user.first_name + " " + self.request.user.last_name + " el día " + datetime.now().strftime("%d/%m/%Y a las %H:%M")+"\n"
+
+
+        if model.log:
+            model.log = updatelog + "Comentarios adicionales:\n" + model.log
+        else:
+            model.log = updatelog
+
+        updatelog += "\nAsunto:" + model.asunto + "\nDetalle:\n" + model.detalle
+
+        model.creador = self.request.user.username
+        send_email(self.request.user.username, "Creación exitosa de orden " + model.id, updatelog)
+
         return super().form_valid(form)
 
-def carga_actividad(request):
-    """Función Ajax para mostrar el detalle de una actividad"""
-    iden = request.GET.get('actividad')
-    actividad = Orden.objects.get(pk = iden)
-    return render(request,'ordenes/consulta.html',{'actividad': actividad })
+    def get_success_message(self, cleaned_data):
+        """Formato para generar el mensaje de orden creada y desliegue de código de órden"""
+        return self.success_message % dict(
+            cleaned_data,
+            id=self.object.id,
+        )
+
 
 def carga_submodulos(request):
     """Función usada por Ajax para actualizar los catálogos de supervisores, teléfonos de contacto y ejecutores"""
@@ -74,7 +146,5 @@ def carga_submodulos(request):
     elif movimiento == 'proveedor':
         proveedor_id = request.GET.get('proveedor_id')
         ejecutores_elegidos = request.GET.get('ejecutores').split(",")
-        print("--lista ejecutores--")
-        print(ejecutores_elegidos)
         ejecutores = Ejecutor.objects.filter(proveedor_id=proveedor_id, activo=1).order_by('nombre')
         return render(request, 'ordenes/lista_ejecutores.html', {'ejecutores': ejecutores , 'elegidos': ejecutores_elegidos})

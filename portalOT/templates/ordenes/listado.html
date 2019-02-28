@@ -10,51 +10,73 @@
       <div class="container mt-5 mb-5">
           <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
 
-          <input class="form-control mb-3" id="myInput" type="text" placeholder="Busqueda">
+          {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-primary" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="{% url "ordenes:listado" %}" method="GET">
+              <input class="form-control mb-3" id="searchby" name="searchby" type="text" placeholder="Filtro de actividades">
+              <input type="submit" value="Buscar">
+            </form>
 
 
-
-          <table class="table table-sm">
+          <table class="table table-sm" id="listado">
             <thead class="thead-light">
               <tr>
                 <th scope="col">Orden</th>
-
                 <th scope="col">Región</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Responsable</th>
                 <th scope="col">Estatus</th>
               </tr>
             </thead>
-            <tbody id="myTable">
+            <tbody>
               {% for orden in ordenes %}
               <tr>
                 <th scope="row">{{ orden.id }}</th>
-                <td>{{ orden.localidades }}</td>
+                <td>{% for localidad in orden.localidades.all %} <p> {{ localidad.localidad }} </p>{% endfor %}</td>
                 <td>{{ orden.asunto }}</td>
                 <td>{{ orden.supervisor.nombre }}</td>
-                <td>{% if orden.estatus == 0 %}<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".modal-{{ orden.id }}" >En revisión</button>{% endif %}</td>
-                <div class="modal fade modal-{{ orden.id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                  {% include "ordenes/consulta.html" %}
-                </div>
+                <td><a href = "{% url 'ordenes:consulta' orden.id %}">
+                  {% if orden.estatus == 0 %}
+                  <button type="button" class="btn consulta-orden btn-warning" >En revisión</button>
+                  {% elif orden.estatus == 1 %}
+                  <button type="button" class="btn consulta-orden btn-primary" >Aceptada</button>
+                  {% elif orden.estatus == 2 %}
+                  <button type="button" class="btn consulta-orden btn-danger" >Rechazada</button>
+                  {% elif orden.estatus == 3 %}
+                  <button type="button" class="btn consulta-orden btn-success" >En ejecución</button>
+                  {% elif orden.estatus == 4 %}
+                  <button type="button" class="btn consulta-orden btn-light" >Finalizada</button>
+                  {% endif %}
+                </a></td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
 
+          <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detalle de la orden</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
 
 
-          <script>
-          $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
-              var value = $(this).val().toLowerCase();
-              $("#myTable tr").filter(function() {
-                $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
-              });
-            });
-          });
 
-          </script>
+                </div>
+                <div class="modal-footer">
 
+                </div>
+              </div>
+            </div>
+          </div>
 
 
           <nav>
@@ -81,14 +103,32 @@
                  </ul>
              </nav>
 
-
+      {% if perms.ordenes.add_orden %}
           <div class="container text-center">
-        <a href = "{% url "ordenes:nuevo" %}">  <button type="button" class="btn btn-outline-primary">Crear nueva orden</button> </a>
+            <a href = "{% url "ordenes:nuevo" %}">  <button type="button" class="btn btn-outline-primary">Crear nueva orden</button> </a>
           </div>
-
-
+      {% endif %}
       </div>
 
+<script>
+
+  $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var url = button.data('url');
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data:{
+              csrfmiddlewaretoken:'{{csrf_token}}',
+            },
+        success: function (data) {
+          $(".modal-body").html(data);
+        }
+      });
+
+    });
+
+</script>
 
 
 {% endblock%}

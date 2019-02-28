@@ -15,6 +15,9 @@ class Supervisor(models.Model):
     gerencia= models.ForeignKey(Gerencia, on_delete=models.CASCADE)
     activo = models.BooleanField()
 
+    class Meta:
+        verbose_name_plural = "Supervisores"
+
     def __str__(self):
        return 'Supervisor: ' + self.nombre
 
@@ -26,6 +29,9 @@ class Localidad(models.Model):
     codigo = models.CharField(max_length=4)
     activo = models.BooleanField()
 
+    class Meta:
+        verbose_name_plural = "Localidades"
+
     def __str__(self):
        return 'Localidad: ' + self.clli + ' '+ self.localidad
 
@@ -35,6 +41,9 @@ class Proveedor(models.Model):
     codigo = models.CharField(max_length=4)
     activo = models.BooleanField()
 
+    class Meta:
+        verbose_name_plural = "Proveedores"
+
     def __str__(self):
        return 'Proveedor: ' + self.nombre
 
@@ -43,6 +52,9 @@ class Ejecutor(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
     proveedor= models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     activo = models.BooleanField()
+
+    class Meta:
+        verbose_name_plural = "Ejecutores"
 
     def __str__(self):
        return 'Ejecutor: ' + self.nombre
@@ -54,3 +66,11 @@ class Servicio(models.Model):
 
     def __str__(self):
        return 'Servicio: ' + self.nombre
+
+class AgenteCorreo(models.Model):
+    """Clase con la información de un correo"""
+    correo = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Agente de correo"

@@ -31,17 +31,16 @@
     <div class = "container">
 
       <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">
-          <img src="{% static 'img/maxcom.png' %}" width="90" height="50" class="d-inline-block align-top" alt="">
-          Portal de órdenes de trabajo Maxcom
-        </a>
+        <div class="navbar-brand">
+          <img src="{% static 'img/maxcom.png' %}" width="90" height="50" class="d-inline-block" alt="">
+          {% if user.is_authenticated %} Bienvenido {{user.first_name}} {{ user.last_name }}  al portal de órdenes de trabajo Maxcom {% else %} Acceso restringuido {% endif %}
+        </div>
         {% if user.is_authenticated %}
         <a href="{% url "ordenes:logout" %}">
             Salir
         </a>
         {% endif %}
       </nav>
-
 
       {% block container %}
 

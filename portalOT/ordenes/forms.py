@@ -22,7 +22,7 @@ class OrdenForm (forms.ModelForm):
 		fields = {'actividad','gerencia','supervisor','contacto','asunto',
 			'detalle','localidades','fecha_inicio','hora_inicio','fecha_fin',
 			'hora_fin','fecha_inicio_afectacion','hora_inicio_afectacion','fecha_fin_afectacion',
-			'hora_fin_afectacion','proveedor','ejecutores','mop','servicios','clientes_afectados','comentarios'}
+			'hora_fin_afectacion','proveedor','ejecutores','mop','servicios','clientes_afectados','log'}
 
 	def clean(self):
 		"""Función de validaciones especiales de formulario"""
@@ -109,3 +109,11 @@ class OrdenForm (forms.ModelForm):
 			return cleaned_data
 		else:
 			raise forms.ValidationError('Validación no pasada!!!')
+
+
+class OrdenEstatusForm(forms.ModelForm):
+	"""Clase de form de cambio de estatus de órden"""
+	class Meta:
+		"""Configuraciones del formulario"""
+		model = Orden
+		fields = {'id','estatus','log'}

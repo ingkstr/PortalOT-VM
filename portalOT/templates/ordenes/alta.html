@@ -16,17 +16,11 @@
 <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/datepicker.es.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.timepicker.js' %}"></script>
-
 <!--Libreria de move selecter -->
 <script type="text/javascript" src="{% static 'js/move-select.js' %}"></script>
 {% endblock %}
 
-
-
 {% block container %}
-
-
-
       <div class="container mt-5 mb-5">
           <p class = "h1 mt-5 mb-5 text-center">Módulo de alta de órdenes y ventanas Maxcom</p>
 
@@ -202,6 +196,7 @@
                           <label for="fecha_inicio" class="label-control">Fecha de inicio de actividad</label>
                           <input
                             type='text'
+                            autocomplete="off"
                             name="fecha_inicio"
                             id="fecha_inicio"
                             class="datepicker-here form-control {% if form.fecha_inicio.errors %}is-invalid{% endif %}"
@@ -233,6 +228,7 @@
                           <input
                             type='text'
                             name="fecha_fin"
+                            autocomplete="off"
                             id="fecha_fin"
                             class="datepicker-here form-control {% if form.fecha_fin.errors %}is-invalid{% endif %}"
                             data-language='es'
@@ -269,6 +265,7 @@
                               type='text'
                               id="fecha_inicio_afectacion"
                               name="fecha_inicio_afectacion"
+                              autocomplete="off"
                               class="datepicker-here form-control {% if form.fecha_inicio_afectacion.errors %}is-invalid{% endif %}"
                               data-language='es'
                               data-position="right top"
@@ -299,6 +296,7 @@
                               type='text'
                               id="fecha_fin_afectacion"
                               name="fecha_fin_afectacion"
+                              autocomplete="off"
                               class="datepicker-here form-control {% if form.fecha_fin_afectacion.errors %}is-invalid{% endif %}"
                               data-language='es'
                               data-position="right top"
@@ -469,14 +467,14 @@
                   <div class="form-group">
                     <label for="detalle_actividad">Comentarios adicionales</label>
                     <textarea
-                      class="form-control {% if form.comentarios.errors %}is-invalid{% endif %}"
+                      class="form-control {% if form.log.errors %}is-invalid{% endif %}"
                       maxlength="250"
-                      id="comentarios"
-                      name="comentarios"
+                      id="log"
+                      name="log"
                       rows="5"
-                    >{% if form.errors %}{{ form.comentarios.value }}{% endif %}</textarea>
+                    >{% if form.errors %}{{ form.log.value }}{% endif %}</textarea>
                     <div class="invalid-feedback">
-                        {% for error in form.comentarios.errors %}{{ error }}{% endfor %}
+                        {% for error in form.log.errors %}{{ error }}{% endfor %}
                     </div>
                   </div>
                 </div>

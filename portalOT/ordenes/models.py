@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Orden(models.Model):
     """Clase modelo de orden de trabajo o ventana de mantenimiento"""
-    id = models.CharField(primary_key=True, max_length=10, unique=True)
+    id = models.CharField(primary_key=True, max_length=30, unique=True)
     actividad = models.CharField(max_length=2)
     gerencia = models.ForeignKey(Gerencia, on_delete=models.CASCADE)
     supervisor = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
@@ -26,6 +26,7 @@ class Orden(models.Model):
     mop = models.FileField(upload_to='mops')
     servicios = models.ManyToManyField(Servicio, blank = True)
     clientes_afectados = models.CharField(max_length=500, blank = True, null = True)
-    comentarios = models.CharField(max_length=250, blank = True, null = True)
     estatus = models.IntegerField(default = 0)
+    creador = models.CharField(max_length=30)
+    fecha_creacion = models.DateField(auto_now_add = True)
     log = models.TextField(default = "Orden creada en "+ str(datetime.now()))

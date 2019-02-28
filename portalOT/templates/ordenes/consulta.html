@@ -1,51 +1,60 @@
 
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ orden.id }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="accordion" id="opcionesvarias">
+{% extends "base.html" %}
 
-          <div class="card">
-            <div class="card-header" id="headBasico">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
-                  Información básica
-                </button>
-              </h5>
-            </div>
+{% block head_content %}
+    <title>Alta de nueva actividad</title>
+{% endblock %}
 
-            <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
-              <div class="card-body">
-                <div class="form-row">
-                <div class="form-group col-md-4 col-sm-12">
-                  <label id="tipo_actividad">Tipo de órden <strong>{{ orden.actividad }}</strong> </label>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                  <label for="gerencia">Gerencia <strong>{{ orden.gerencia.nombre }}</strong> </label>
-                </div>
+{% load static %}
 
-                <div class="form-group col-md-4 col-sm-12">
-                  <label for="supervision">Supervisión <strong>{{ orden.supervisor.nombre }}</strong> </label>
+{% block container %}
+      <div class="container mt-5 mb-5">
+          <p class = "h1 mt-5 mb-5 text-center">Consulta de orden {{ orden.id }}</p>
 
-                </div>
+          {% if orden.estatus == 2 %}
+          <div class="alert alert-danger" role="alert">
+            Actividad rechazada!!!
+          </div>
+          {% elif orden.estatus == 4 %}
+          <div class="alert alert-dark" role="alert">
+            Actividad finalizada
+          </div>
+          {% endif %}
 
-                </div>
-                <div class="form-group">
-                  <label for="asunto"> <strong>{{ orden.asunto }}</strong>
-                  </label>
-                </div>
-                <div class="form-group">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+          <div class="accordion" id="opcionesvarias">
 
+            <div class="card">
+              <div class="card-header" id="headBasico">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoBasico" aria-expanded="false" aria-controls="contenidoBasico">
+                    Información básica
+                  </button>
+                </h5>
+              </div>
+
+              <div id="contenidoBasico" class="collapse" aria-labelledby="headBasico" data-parent="#opcionesvarias">
+                <div class="card-body">
+                  <div class="form-row">
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label id="tipo_actividad">Tipo de órden <strong>{{ orden.actividad }}</strong> </label>
+                  </div>
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label for="gerencia">Gerencia <strong>{{ orden.gerencia.nombre }}</strong> </label>
+                  </div>
+                  <div class="form-group col-md-4 col-sm-12">
+                    <label for="supervision">Supervisión <strong>{{ orden.supervisor.nombre }}</strong> </label>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="asunto"> <strong>{{ orden.asunto }}</strong>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <p>{{ orden.detalle }}</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
           <div class="card">
             <div class="card-header" id="headProgramacion">
@@ -55,57 +64,42 @@
                 </button>
               </h5>
             </div>
+
             <div id="contenidoProgramacion" class="collapse" aria-labelledby="headProgramacion" data-parent="#opcionesvarias">
               <div class="card-body">
-
-
                     <label>Localidades</label>
                     <ul>
-                      <li>Central Heraldo</li>
-
+                      {% for localidad in orden.localidades.all %} <li> {{ localidad.localidad }} </li>{% endfor %}
                     </ul>
-
-
                   <p class = "h4 mt-3 ">Periodo de actividad</p>
                   <div class="form-row">
                       <div class="form-group col-md-6 col-sm-6">
-                        <label for="fecha-inicio" class="label-control">Fecha y hora de inicio de actividad
-                          <strong>06-02-2018 21:00</strong>
+                        <label for="fecha-inicio" class="label-control">Inicio de actividad
+                          <strong>{{ orden.fecha_inicio|date:'d-m-Y' }} {{ orden.hora_inicio|time:'H:i' }}</strong>
                         </label>
-
                       </div>
                       <div class="form-group col-md-6 col-sm-6">
-                        <label for="fecha-fin" class="label-control">Fecha y hora de fin de actividad
-                          <strong>07-02-2018 03:00</strong>
+                        <label for="fecha-fin" class="label-control">Fin de actividad
+                          <strong>{{ orden.fecha_fin|date:'d-m-Y' }} {{ orden.hora_fin|time:'H:i' }}</strong>
                         </label>
                         </div>
-
                   </div>
-
-            <!--      <p class = "h4 mt-1">Periodo de afectación</p>
+              {% if orden.actividad == "VM" %}
+               <p class = "h4 mt-1">Periodo de afectación</p>
                   <div class="form-row">
                       <div class="form-group col-md-3 col-sm-6">
                         <label for="fecha-inicio-afectacion" class="label-control">Fecha de inicio de afectación</label>
-                        <input type='text' id="fecha-inicio-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
-                      </div>
-                      <div class="form-group col-md-3 col-sm-6">
-                        <label for="hora-inicio-afectacion" class="label-control">Hora de inicio de afectación</label>
-                        <input id="hora-inicio-afectacion" type="text" class="time" />
+                        <strong>{{ orden.fecha_inicio_afectacion|date:'d-m-Y' }} {{ orden.hora_inicio_afectacion|time:'H:i' }}</strong>
                       </div>
                       <div class="form-group col-md-3 col-sm-6">
                         <label for="fecha-fin-afectacion" class="label-control">Fecha de fin de afectación</label>
-                        <input type='text' id="fecha-fin-afectacion" class="datepicker-here" data-language='es' data-position="right top" />
+                        <strong>{{ orden.fecha_fin_afectacion|date:'d-m-Y' }} {{ orden.hora_fin_afectacion|time:'H:i' }}</strong>
                       </div>
-                      <div class="form-group col-md-3 col-sm-6">
-                        <label for="hora-fin-afectacion" class="label-control">Hora de fin de afectación</label>
-                        <input id="hora-fin-afectacion" type="text" class="time" />
-                      </div>
-                  </div>  -->
-
-
+                  </div>
+                  {% endif %}
               </div>
             </div>
-
+        </div>
 
           <div class="card">
             <div class="card-header" id="headProveedor">
@@ -119,13 +113,11 @@
             <div id="contenidoProveedor" class="collapse" aria-labelledby="headProveedor" data-parent="#opcionesvarias">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="proveedor">Proveedor <strong>Ribbon</strong> </label>
+                  <label for="proveedor">Proveedor <strong>{{ orden.proveedor.nombre }}</strong> </label>
                   <ul>
-                    <li>Tony Pittman</li>
-                    <li>Wagner Vicentin</li>
+                      {% for ejecutor in orden.ejecutores.all %} <li> {{ ejecutor.nombre }} </li>{% endfor %}
                   </ul>
                 </div>
-
               </div>
             </div>
           </div>
@@ -141,12 +133,13 @@
             </div>
             <div id="contenidoActividades" class="collapse" aria-labelledby="headActividades" data-parent="#opcionesvarias">
               <div class="card-body">
-                <button type="button" class="btn btn-link">Descarga MOP aquí</button>
+                <a href="{{ orden.mop.url }}">Descarga MOP aqui </a>
               </div>
             </div>
           </div>
 
-        <!--  <div class="card">
+          {% if orden.actividad == "VM" %}
+          <div class="card">
             <div class="card-header" id="headAfectacion">
               <h5 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoAfectacion" aria-expanded="false" aria-controls="contenidoAfectacion">
@@ -159,62 +152,62 @@
 
                 <div class="form-group">
                   <label for="personal-proveedor">Selecciona los servicios afectados</label>
-                  <select multiple class="form-control" id="personal-proveedor">
-                    <option>Voz TDM</option>
-                    <option>TKSIP</option>
-                    <option>Hosted IPPBX</option>
-                    <option>Internet Dedicado</option>
-                    <option>Acceso IP</option>
-                  </select>
+                    {% for servicio in orden.servicios.all %} <li> {{ servicio.nombre }} </li>{% endfor %}
                 </div>
-
                 <div class="form-group">
                   <label for="clientesafectados">Lista de clientes afectados</label>
-                  <textarea class="form-control" id="clientesafectados" rows="5"></textarea>
-                </div>
-
-              </div>
-            </div>
-          </div>  -->
-
-          <div class="card">
-            <div class="card-header" id="headComentarios">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#contenidoComentarios" aria-expanded="false" aria-controls="contenidoComentarios">
-                  Comentarios adicionales
-                </button>
-              </h5>
-            </div>
-            <div id="contenidoComentarios" class="collapse" aria-labelledby="headComentarios" data-parent="#opcionesvarias">
-              <div class="card-body">
-                <div class="form-group">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-
+                  {{ orden.clientes_afectados}}
                 </div>
               </div>
             </div>
           </div>
-
+          {% endif %}
 
         </div>
 
       </div>
-      <div class="mt-3">
-        <form>
+
+
+      <div class="container mt-3">
+        {% if orden.estatus == 0 or orden.estatus == 1 or orden.estatus == 3 %}
+        <p class = "h3 text-center">Actualización</p>
+        <form method="post">
+          {% csrf_token %}
+          <input name="id" type="hidden" value="{{ orden.id }}">
           <div class="form-group">
-            <label for="estatus_orden">Selecciona un estatus nuevo</label>
-            <select class="custom-select" id="estatus_orden" >
+            <label for="estatus">Selecciona un estatus nuevo</label>
+            <select class="custom-select form-control {% if form.estatus.errors %}is-invalid{% endif %}" id="estatus" name="estatus" >
               <option selected value="0">--Cambiar estatus--</option>
-              <option value="1">Aceptado</option>
-              <option value="2">Rechazado</option>
-              <option value="3">Reprogramado</option>
+              {% if orden.estatus == 0 %}<option value="1">Aceptado</option> {% endif %}
+              {% if orden.estatus == 0 %}<option value="2">Rechazado</option> {% endif %}
+              {% if orden.estatus == 1 %}<option value="3">En ejecución</option> {% endif %}
+              {% if orden.estatus == 3 %}<option value="4">Finalizado</option> {% endif %}
             </select>
+            <div class="invalid-feedback">
+                {% for error in form.estatus.errors %}{{ error }}{% endfor %}
+            </div>
           </div>
           <div class="form-group">
-            <label for="estatus">Comentarios de estatus</label>
-            <textarea class="form-control" id="estatus" rows="3"></textarea>
+            <label for="log">Comentarios de estatus</label>
+            <textarea class="form-control {% if form.log.errors %}is-invalid{% endif %}" id="log" name="log" rows="3"></textarea>
+            <div class="invalid-feedback">
+                {% for error in form.log.errors %}{{ error }}{% endfor %}
+            </div>
           </div>
-          <button type="button" class="btn btn-primary">Actualizar</button>
+          <div class="form-group">
+            <label for="log">Historial de logs y comentarios</label>
+            <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
+            <div class="invalid-feedback">
+                {% for error in form.log.errors %}{{ error }}{% endfor %}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
-      </div>
+        {% else %}
+        <label for="log">Historial de logs y comentarios</label>
+        <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
+        {% endif %}
+
     </div>
+
+{% endblock %}

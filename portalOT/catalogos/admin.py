@@ -1,5 +1,6 @@
 from django.contrib import admin
 from catalogos.models import *
+from catalogos.forms import AgenteCorreoForm
 
 
 class NoDeletableModelAdmin(admin.ModelAdmin):
@@ -141,3 +142,24 @@ class ServicioAdmin(NoDeletableModelAdmin):
                 'fields':(( 'activo', ),),
                 }),
         )
+
+@admin.register(AgenteCorreo)
+class AgenteCorreoAdmin(NoDeletableModelAdmin):
+    """Clase NoDeletableModelAdmin para los servicios"""
+    form = AgenteCorreoForm
+    list_display = ('correo',)
+    list_display_links = ('correo',)
+
+    fieldsets=(
+            ('Información',{
+                'fields':(('correo','password',),),
+                }),
+        )
+
+
+    def has_add_permission(self, request):
+        num_objects = self.model.objects.count()
+        if num_objects >= 1:
+            return False
+        else:
+            return True

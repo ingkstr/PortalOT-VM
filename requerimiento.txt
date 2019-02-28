@@ -1,13 +1,24 @@
 REQUERIMIENTOS FUNCIONALES
 ==========================
 
-Mecanismo para reprogramar actividades
-Envío de email para notificar actividad en el portal
+Mecanismo para reprogramar actividades -> pendiente para saber requerimiento exacto
+
 Privilegios para autorizar o rechazar actividades
-Privilegios admin para catálogo
+
 
 
 REQUERIMIENTOS NO FUNCIONALES
 =============================
 
 Fin de sesión a los 10 minutos inactivos
+
+
+
+HASTA EL MOMENTO
+=================
+
+Portal de administración de catálogos y envio de correos
+Portal de Consulta
+Muestra de logs de ordenes
+Envío de email para notificar actividad en el portal
+Privilegios admin para catálogo

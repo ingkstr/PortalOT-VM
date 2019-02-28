@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalogos',
     'ordenes',
+    'emails',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,7 @@ STATICFILES_FINDERS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-LOGIN_URL= 'listado/'
+LOGIN_URL= '/'
 
 LOGIN_REDIRECT_URL = 'listado/'
 LOGOUT_REDIRECT_URL = '/'
