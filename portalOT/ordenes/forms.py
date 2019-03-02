@@ -117,3 +117,10 @@ class OrdenEstatusForm(forms.ModelForm):
 		"""Configuraciones del formulario"""
 		model = Orden
 		fields = {'id','estatus','log'}
+
+	def clean_estatus(self):
+		"""Validación de que no maneje estatus cero"""
+		estatus = self.cleaned_data['estatus']
+		if estatus == 0:
+			raise forms.ValidationError('Debes poner un estatus válido')
+		return estatus

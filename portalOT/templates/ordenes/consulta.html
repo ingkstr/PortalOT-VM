@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block head_content %}
-    <title>Alta de nueva actividad</title>
+    <title>Consulta de orden actividad</title>
 {% endblock %}
 
 {% load static %}
@@ -11,9 +11,21 @@
       <div class="container mt-5 mb-5">
           <p class = "h1 mt-5 mb-5 text-center">Consulta de orden {{ orden.id }}</p>
 
-          {% if orden.estatus == 2 %}
+          {% if orden.estatus == 0 %}
+          <div class="alert alert-warning" role="alert">
+            Actividad en revisión
+          </div>
+          {% elif orden.estatus == 1 %}
+          <div class="alert alert-primary" role="alert">
+            Actividad aceptada
+          </div>
+          {% elif orden.estatus == 2 %}
           <div class="alert alert-danger" role="alert">
             Actividad rechazada!!!
+          </div>
+          {% elif orden.estatus == 3 %}
+          <div class="alert alert-success" role="alert">
+            Actividad en ejecución
           </div>
           {% elif orden.estatus == 4 %}
           <div class="alert alert-dark" role="alert">
@@ -169,7 +181,14 @@
 
 
       <div class="container mt-3">
-        {% if orden.estatus == 0 or orden.estatus == 1 or orden.estatus == 3 %}
+        {% if not perms.ordenes.change_orden %}
+        <label for="log">Historial de logs y comentarios</label>
+        <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
+
+        {% elif orden.estatus != 0 and orden.estatus != 1 and orden.estatus != 4 %}
+        <label for="log">Historial de logs y comentarios</label>
+        <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
+        {% else %}
         <p class = "h3 text-center">Actualización</p>
         <form method="post">
           {% csrf_token %}
@@ -189,23 +208,20 @@
           </div>
           <div class="form-group">
             <label for="log">Comentarios de estatus</label>
-            <textarea class="form-control {% if form.log.errors %}is-invalid{% endif %}" id="log" name="log" rows="3"></textarea>
+            <textarea class="form-control {% if form.log.errors %}is-invalid{% endif %}" id="log" name="log" rows="3">{% if form.errors %}{{ form.log.value }}{% endif %}</textarea>
             <div class="invalid-feedback">
                 {% for error in form.log.errors %}{{ error }}{% endfor %}
             </div>
           </div>
           <div class="form-group">
             <label for="log">Historial de logs y comentarios</label>
-            <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
+            <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{% if form.errors %}{{ viejo_log }}{% else %}{{ orden.log }}{% endif %}</textarea>
             <div class="invalid-feedback">
                 {% for error in form.log.errors %}{{ error }}{% endfor %}
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
-        {% else %}
-        <label for="log">Historial de logs y comentarios</label>
-        <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
         {% endif %}
 
     </div>

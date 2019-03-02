@@ -25,7 +25,7 @@ SECRET_KEY = 's!qmztg2h@gl94^r3bl(ut75e4nt+v+#8^#)=1mihm4i&vpi0-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ordenes.middleware.InactivityValidationMiddleware',
 ]
 
 ROOT_URLCONF = 'portalOT.urls'
@@ -130,6 +131,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+SESSION_COOKIE_AGE = 600 #10 minutos
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

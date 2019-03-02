@@ -48,22 +48,27 @@ class OrdenUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """Actualiza estatus de orden"""
     template_name='ordenes/consulta.html'
     model =  Orden
-    fields = ['id','estatus','log']
+    form_class = OrdenEstatusForm
     slug_field = 'pk'
     slug_url_kwarg = 'pk'
     success_url = reverse_lazy('ordenes:listado')
     success_message = "Orden %(id)s actualizado exitosamente"
 
+    def form_invalid(self, form):
+        """Se debe conservar el log en pantalla si hay un errors"""
+        contexto = self.get_context_data(form=form)
+        if not contexto.get('viejo_log'):
+            contexto['viejo_log'] = form.initial['log']
+        return self.render_to_response(contexto)
+
     def form_valid(self, form):
         """Generación de log de cambios"""
         model = form.save(commit=False)
-        estatus = {1 : "Aceptado", 2 : "Rechazado", 3:"En ejecución", 4: "Finalizada", 5 : "Reprogramada"}
+        estatus = {1 : "Aceptado", 2 : "Rechazado", 3:"En ejecución", 4: "Finalizada"}
         updatelog = "Usuario " + self.request.user.first_name + " " + self.request.user.last_name + " cambia estado a " + estatus[model.estatus]
         if model.log:
             updatelog += " comentando lo siguiente:\n" + model.log +"\n"
-
-        model.log = updatelog + model.log
-
+        model.log = updatelog + form.initial['log']
         send_email(self.request.user.username, "Actualización de orden " + model.id, updatelog)
         return super().form_valid(form)
 

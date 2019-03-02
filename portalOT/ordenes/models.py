@@ -29,4 +29,4 @@ class Orden(models.Model):
     estatus = models.IntegerField(default = 0)
     creador = models.CharField(max_length=30)
     fecha_creacion = models.DateField(auto_now_add = True)
-    log = models.TextField(default = "Orden creada en "+ str(datetime.now()))
+    log = models.TextField(blank = True, null = True)

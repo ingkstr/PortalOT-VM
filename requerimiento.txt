@@ -3,14 +3,13 @@ REQUERIMIENTOS FUNCIONALES
 
 Mecanismo para reprogramar actividades -> pendiente para saber requerimiento exacto
 
-Privilegios para autorizar o rechazar actividades
+
 
 
 
 REQUERIMIENTOS NO FUNCIONALES
 =============================
 
-Fin de sesión a los 10 minutos inactivos
 
 
 
@@ -22,3 +21,5 @@ Portal de Consulta
 Muestra de logs de ordenes
 Envío de email para notificar actividad en el portal
 Privilegios admin para catálogo
+Privilegios para autorizar o rechazar actividades
+Fin de sesión a los 10 minutos inactivos
