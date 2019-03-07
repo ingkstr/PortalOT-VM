@@ -1,0 +1,5 @@
+
+<option value="0">-----------</option>
+{% for supervisor in supervisores %}
+<option value="{{ supervisor.pk }}" {% if supervisor.pk|add:0 == elegido|add:0 %}selected = "selected"{% endif %} >{{ supervisor.nombre }}</option>
+{% endfor %}

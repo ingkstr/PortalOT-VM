@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+{% block head_content %}
+
+{% endblock %}
+
+{% load static %}
+    <!--Libreria css mínimas de bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+    {% block extra_css %}
+
+    {% endblock %}
+
+    <!-- Librerias js mínimas de bootstrap -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    {% block extra_js %}
+
+    {% endblock %}
+
+
+</head>
+<body>
+    <div class = "container">
+
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="navbar-brand">
+          <img src="{% static 'img/maxcom.png' %}" width="90" height="50" class="d-inline-block" alt="">
+          {% if user.is_authenticated %} Bienvenido {{user.first_name}} {{ user.last_name }}  al portal de órdenes de trabajo Maxcom {% else %} Acceso restringuido {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url "ordenes:logout" %}">
+            Salir
+        </a>
+        {% endif %}
+      </nav>
+
+      {% block container %}
+
+      {% endblock%}
+
+    </div>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
-portalOT.*.__pycache__.*
-portalOT.*.migrations.*
-portalOT.db.sqlite3
+*.__pycache__.*
+*.migrations.*
+db.sqlite3
+media/mops/*.*

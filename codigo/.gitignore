@@ -1,0 +1,4 @@
+portalOT/catalogos/__pycache__/*.pyc
+portalOT/__pycache__/*.pyc
+portalOT/catalogos/migrations/__pycache__/*.pyc
+portalOT/db.sqlite3
