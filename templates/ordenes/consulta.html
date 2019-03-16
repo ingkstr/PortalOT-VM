@@ -185,7 +185,7 @@
         <label for="log">Historial de logs y comentarios</label>
         <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
 
-        {% elif orden.estatus != 0 and orden.estatus != 1 and orden.estatus != 4 %}
+        {% elif orden.estatus != 0 and orden.estatus != 1 and orden.estatus != 3 %}
         <label for="log">Historial de logs y comentarios</label>
         <textarea class="form-control" id="prevlog" name="prevlog" rows="5" disabled>{{ orden.log }}</textarea>
         {% else %}
